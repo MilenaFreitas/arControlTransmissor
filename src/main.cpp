@@ -305,7 +305,7 @@ void arLiga(void *pvParameters){
     String hora;
     hora= data.tm_hour;
     //liga ar
-    digitalWrite(con, 1);  //CON desligada
+    digitalWrite(eva, 0);
     Serial.println(tempAtual);
     if(tempAtual>=(tIdeal+2)){ //quente
       if(digitalRead(eva)==0){
@@ -317,7 +317,7 @@ void arLiga(void *pvParameters){
         Serial.println("condensadora ligada");
       }	
       StaticJsonDocument<256> doc;
-      doc["status AR"]= "ligado"; 
+      doc["statusAR"]= "ligado"; 
       doc["condensadora"]=!digitalRead(con);
       doc["evaporadora"]=!digitalRead(eva);
       char buffer[256];
@@ -330,7 +330,7 @@ void arLiga(void *pvParameters){
       digitalWrite(eva, 0);
       Serial.println("condensadora desligada");	
       StaticJsonDocument<256> doc;
-      doc["status AR"]="desligado"; 
+      doc["statusAR"]="desligado"; 
       doc["condensadora"]=!digitalRead(con);
       doc["evaporadora"]=!digitalRead(eva);
       char buffer[256];
@@ -340,7 +340,7 @@ void arLiga(void *pvParameters){
     } else if(tempAtual==tIdeal){
       Serial.println("temp ideal");	
       StaticJsonDocument<256> doc;
-      doc["status AR"]="temp ideal"; 
+      doc["statusAR"]="temp ideal"; 
       doc["condensadora"]=!digitalRead(con);
       doc["evaporadora"]=!digitalRead(eva);
       char buffer[256];
