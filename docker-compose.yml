@@ -1,0 +1,56 @@
+version: '3.9'
+services: 
+  web:
+    container_name: 'web-sico'
+    image: 'httpd:latest'
+    networks: 
+      - 'sico-network'
+    ports: 
+      - '80:80'
+      - '443:443'
+    volumes: 
+      - './apache/html:/usr/local/apache2/htdocs/'
+    restart: 'unless-stopped'
+    
+  node-red:
+    container_name: 'nodered'
+    image: 'nodered/node-red:latest'
+    networks: 
+      - 'sico-network'
+    ports: 
+      - '1880:1880'
+      - '1883:1883'
+    volumes: 
+      - './node-red:/data'
+    environment: 
+      - 'TZ=America/Bahia'
+      - 'NODE_RED_CREDENTIAL_SECRET= 1013'
+    restart: 'unless-stopped'
+  mongo:
+    container_name: 'mongo'
+    image: 'mongo:latest'
+    networks:
+      - 'sico-network'
+    restart: 'unless-stopped'
+    ports: 
+      - '27017:27017'
+    volumes: 
+      - './mongo-data:/data/db'
+  mongo-express:
+    container_name: 'mongo-express'
+    image: 'mongo-express:latest'
+    restart: 'unless-stopped'
+    networks:
+      - 'sico-network'
+    ports:
+      - 8081:8081
+    environment:
+      - 'ME_CONFIG_MONGODB_SERVER=mongo'
+      - 'ME_CONFIG_BASICAUTH_USERNAME=Milena'
+      - 'ME_CONFIG_BASICAUTH_PASSWORD=zaq1xsw2'
+      - 'ME_CONFIG_MONGODB_PORT=27017'
+    links:
+      - 'mongo'
+networks: 
+  sico-network:
+    driver: bridge
