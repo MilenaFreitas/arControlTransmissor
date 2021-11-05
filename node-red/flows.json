@@ -1,0 +1,218 @@
+[
+    {
+        "id": "82585838acbacbb2",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4f295c75d3c33dc8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "00df11dbf86dc40f",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "10.71.0.132",
+        "port": "1883",
+        "tls": "",
+        "clientid": "",
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "a72959910ae5baa1",
+        "type": "mongodb2",
+        "uri": "mongodb://mongo:27017/metropole",
+        "name": "",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "6fcde0db7cbf9450",
+        "type": "mqtt in",
+        "z": "82585838acbacbb2",
+        "name": "",
+        "topic": "fechadura",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "4f295c75d3c33dc8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "446ea4f905fd8337"
+            ]
+        ]
+    },
+    {
+        "id": "ae1e89d5abde5e78",
+        "type": "mqtt in",
+        "z": "82585838acbacbb2",
+        "name": "",
+        "topic": "abrirPorta",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "4f295c75d3c33dc8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 160,
+        "y": 240,
+        "wires": [
+            [
+                "a1ab4a6aef42f530"
+            ]
+        ]
+    },
+    {
+        "id": "74723aada64a67f6",
+        "type": "mqtt in",
+        "z": "82585838acbacbb2",
+        "name": "",
+        "topic": "trancaPorta",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "4f295c75d3c33dc8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 170,
+        "y": 320,
+        "wires": [
+            [
+                "a142c7021ece2f86"
+            ]
+        ]
+    },
+    {
+        "id": "f8f3a0a61e99f25b",
+        "type": "aedes broker",
+        "z": "82585838acbacbb2",
+        "name": "",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "certname": "",
+        "keyname": "",
+        "dburl": "",
+        "usetls": false,
+        "x": 120,
+        "y": 40,
+        "wires": [
+            [
+                "d99613c45c61af82"
+            ],
+            [
+                "d99613c45c61af82"
+            ]
+        ]
+    },
+    {
+        "id": "446ea4f905fd8337",
+        "type": "debug",
+        "z": "82585838acbacbb2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "a1ab4a6aef42f530",
+        "type": "debug",
+        "z": "82585838acbacbb2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "a142c7021ece2f86",
+        "type": "debug",
+        "z": "82585838acbacbb2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "d99613c45c61af82",
+        "type": "debug",
+        "z": "82585838acbacbb2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 80,
+        "wires": []
+    }
+]

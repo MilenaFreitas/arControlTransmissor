@@ -403,5 +403,44 @@
                 "file": "/usr/src/node-red/node_modules/@node-red/nodes/core/storage/23-watch.js"
             }
         }
+    },
+    "node-red-contrib-aedes": {
+        "name": "node-red-contrib-aedes",
+        "version": "0.6.0",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "aedes-mqtt-broker": {
+                "name": "aedes-mqtt-broker",
+                "types": [
+                    "aedes broker"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-aedes",
+                "file": "/data/node_modules/node-red-contrib-aedes/aedes.js"
+            }
+        }
+    },
+    "node-red-contrib-mongodb2": {
+        "name": "node-red-contrib-mongodb2",
+        "version": "0.5.6",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "mongodb2": {
+                "name": "mongodb2",
+                "types": [
+                    "mongodb2",
+                    "mongodb2 in"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-mongodb2",
+                "file": "/data/node_modules/node-red-contrib-mongodb2/mongodb2/mongodb2.js"
+            }
+        }
     }
 }

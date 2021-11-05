@@ -368,7 +368,7 @@ void payloadMQTT(){
   doc["ip"] = ip.toString();
   doc["mac"] = mac;
   doc["hora"]=tt;
-  doc["Temperatura"]=tempAtual;
+  doc["temperatura"]=tempAtual;
   doc["movimento"]=movimento; 
   doc["evaporadora"]=!(digitalRead(eva));
   doc["condensadora"]=!(digitalRead(con));
@@ -438,4 +438,3 @@ void loop(){
   }
   delay(500);
 }
-
