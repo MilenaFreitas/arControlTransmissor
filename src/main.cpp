@@ -17,7 +17,7 @@
 #define EEPROM_SIZE 1024
 #define WIFI_NOME "Metropole" //rede wifi específica
 #define WIFI_SENHA "908070Radio"
-#define BROKER_MQTT "10.71.0.2"
+#define BROKER_MQTT "10.71.0.132"
 #define DEVICE_TYPE "ESP32"
 #define TOKEN "ib+r)WKRvHCGjmjGQ0"
 #define ORG "n5hyok"
@@ -39,7 +39,8 @@ U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(15, 4, 16);
 
 const char* host = "esp3";
 char topic1[]= "status";          // topico MQTT
-char topic2[]= "mqttemperatura";          // topico MQTT
+char topic2[]= "mqttemperatura";  // topico MQTT
+char topic3[]="memoria"; 
 bool publishNewState = false; 
 TaskHandle_t retornoTemp;
 IPAddress ip=WiFi.localIP();
@@ -51,7 +52,7 @@ char data_formatada[64];
 char hora_formatada[64];
 bool tensaoPin=false;
 bool novaTemp=false;
-int tIdeal=24;
+int tIdeal;
 int rede;
 String comando;
 unsigned long previousMillis=0;
@@ -67,6 +68,8 @@ const int eva=26;
 const int sensorTensao=23;
 unsigned long tempo=1000*60*5; // verifica movimento a cada 5 min
 unsigned long ultimoGatilho = millis()+tempo;
+std::string msg2;
+std::string msg3;
 ////////////////////////////////////////////////////////////////
 /* Style */
 String style =
@@ -139,7 +142,22 @@ String serverIndex =
 "</script>" + style;
 ////////////////////////////////////////////////////////////////
 void callback(char* topicc, byte* payload, unsigned int length){
-  
+  std::string msg;
+  if (topic3){
+    for (int i=0;i<length;i++) {
+      msg += (char)payload[i];
+    }
+    msg2= msg.substr(0,1); //retorna o t
+    msg3= msg.substr(1,2);  //retorna a temperatura ideal
+    if(msg2=="t"){
+      Serial.print("---------------------");
+      Serial.print(msg2.c_str());
+      Serial.print(msg3.c_str());
+      Serial.println("---------------------");
+      tIdeal = atoi(msg3.c_str());
+      Serial.println(tIdeal);
+    }
+  }
 }
 void UpdateRemoto() { 
   //upload via web
@@ -190,6 +208,7 @@ void conectaMQTT(){
       client.publish ("teste", "hello word");
       client.subscribe (topic1);   //se inscreve no topico a ser usado
       client.subscribe (topic2);
+      client.subscribe (topic3);
     } else {
       Serial.println("Falha na conexao");
       Serial.print(client.state());
@@ -218,13 +237,10 @@ void datahora(){
 }
 void dadosEEPROM(){
   //DEFINE OS DADOS EMERGENCIAIS DA EPROOM 
-  if(EEPROM.read(0) != 24) {
-    EEPROM.write(0, 24);  //escreve 24 no dress=0
-  } else if(EEPROM.read(1) != 19){
-    EEPROM.write(1, 19);  //escreve 19 no dress=1
-  } else if(EEPROM.read(2) != 7){
-    EEPROM.write(2, 7);  //escreve 7 no dress=2
-  }
+  if(EEPROM.read(0) != tIdeal) {
+    EEPROM.write(0, tIdeal);  //escreve tempIdeal no dress=0 vindo do mqtt
+    Serial.println("ESCREVEU NA EEPROM");
+  } 
 }
 void iniciaWifi(){
   int cont=0;
@@ -255,8 +271,8 @@ void redee(){
     //protocolo offline
     Serial.println("rede 0");
     EEPROM.begin(EEPROM_SIZE);
-    dadosEEPROM();
-    // tIdeal=EEPROM.read(0);
+    
+    tIdeal=EEPROM.read(0);
     // Hdes=EEPROM.read(1);
     // Hliga=EEPROM.read(2);
   }
@@ -287,18 +303,11 @@ void pegaTemp() {
   }
 }
 void publish(){
-  if (tempAntiga != tempAtual){
+  if(tempAtual>50){
+    tempAtual=tempAntiga;
+  }else if (tempAntiga != tempAtual){
     // nova temperatura
-    tempAntiga=tempAtual;
-    if(tempAtual>50){
-      novaTemp=0;
-    } else {
-      novaTemp=1;
-    }
-  } else {
-    // temperatura igual
-    novaTemp=0;
-  }
+  }  tempAntiga=tempAtual;
 }
 void arLiga(void *pvParameters){
   while(1){
@@ -307,6 +316,7 @@ void arLiga(void *pvParameters){
     //liga ar
     digitalWrite(eva, 0);
     Serial.println(tempAtual);
+    Serial.println(tIdeal);
     if(tempAtual>=(tIdeal+2)){ //quente
       if(digitalRead(eva)==0){
         digitalWrite(con, 0);
@@ -347,7 +357,6 @@ void arLiga(void *pvParameters){
       serializeJson(doc, buffer);
       client.publish(topic2, buffer);
     }
-    novaTemp=0;
     vTaskDelay(pdMS_TO_TICKS(60000));
   }
 }
@@ -415,6 +424,7 @@ void setup(){
   mac=DEVICE_ID;     //pega mac
   UpdateRemoto(); //inicializa update via web
   server.begin(); //servidor web
+  dadosEEPROM(); //grava dados na EEPROM
 }
 void loop(){
   datahora();
