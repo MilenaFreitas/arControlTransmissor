@@ -58,7 +58,6 @@ String comando;
 unsigned long previousMillis=0;
 unsigned long previousMillis1=0;
 const long intervalo=1000*60*1; //1 min
-int vez=0;
 int movimento=0;
 //=============
 const int dhtPin1=32;
@@ -70,6 +69,7 @@ unsigned long tempo=1000*60*5; // verifica movimento a cada 5 min
 unsigned long ultimoGatilho = millis()+tempo;
 std::string msg2;
 std::string msg3;
+int vez=0;
 ////////////////////////////////////////////////////////////////
 /* Style */
 String style =
@@ -209,6 +209,7 @@ void conectaMQTT(){
       client.subscribe (topic1);   //se inscreve no topico a ser usado
       client.subscribe (topic2);
       client.subscribe (topic3);
+      client.subscribe ("tempideal");
     } else {
       Serial.println("Falha na conexao");
       Serial.print(client.state());
@@ -445,6 +446,15 @@ void loop(){
   } else if(ultimoGatilho>millis() && movimento==1){
     //tem movimento na sala
     payloadMQTT();
+  }
+  if(vez==0){
+    StaticJsonDocument<256> doc;
+    doc["etapa"]="ligado";
+    char buffer[256];
+    serializeJson(doc, buffer);
+    client.publish("tempideal", buffer);
+    Serial.println("mandou");
+    vez=1;
   }
   delay(500);
 }
