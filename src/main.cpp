@@ -17,7 +17,7 @@
 #define EEPROM_SIZE 1024
 #define WIFI_NOME "Metropole" //rede wifi específica
 #define WIFI_SENHA "908070Radio"
-#define BROKER_MQTT "10.71.0.132"
+#define BROKER_MQTT "10.71.0.2"
 #define DEVICE_TYPE "ESP32"
 #define TOKEN "ib+r)WKRvHCGjmjGQ0"
 #define ORG "n5hyok"
