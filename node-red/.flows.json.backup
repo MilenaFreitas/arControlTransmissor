@@ -1,5 +1,12 @@
 [
     {
+        "id": "32525ad6c5cd5b5c",
+        "type": "tab",
+        "label": "Redacao-01",
+        "disabled": true,
+        "info": ""
+    },
+    {
         "id": "82585838acbacbb2",
         "type": "tab",
         "label": "Flow 1",
@@ -7,9 +14,9 @@
         "info": ""
     },
     {
-        "id": "32525ad6c5cd5b5c",
+        "id": "9823b9b22e98967c",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "ArTransmissor",
         "disabled": false,
         "info": ""
     },
@@ -69,6 +76,14 @@
         "type": "mongodb2",
         "uri": "mongodb://mongo:27017/metropole",
         "name": "",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "58653eca164e1773",
+        "type": "mongodb2",
+        "uri": "mongodb://10.71.0.2:27017/metropole",
+        "name": "MONGO RADIO",
         "options": "",
         "parallelism": "-1"
     },
@@ -294,7 +309,7 @@
         "type": "debug",
         "z": "32525ad6c5cd5b5c",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -311,7 +326,7 @@
         "type": "debug",
         "z": "32525ad6c5cd5b5c",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -348,8 +363,8 @@
         "name": "",
         "collection": "arcondicionado",
         "operation": "",
-        "x": 460,
-        "y": 420,
+        "x": 420,
+        "y": 240,
         "wires": [
             [
                 "41c6e94a936118b5"
@@ -369,8 +384,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 590,
-        "y": 500,
+        "x": 650,
+        "y": 320,
         "wires": []
     },
     {
@@ -384,11 +399,10 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 140,
-        "y": 480,
+        "x": 120,
+        "y": 300,
         "wires": [
             [
-                "4e0cfdbdf147dba3",
                 "9df6c76321bf63f7"
             ]
         ]
@@ -406,8 +420,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 350,
-        "y": 500,
+        "x": 330,
+        "y": 340,
         "wires": []
     },
     {
@@ -418,7 +432,7 @@
         "scope": null,
         "uncaught": false,
         "x": 80,
-        "y": 800,
+        "y": 660,
         "wires": [
             [
                 "b1a93586455d0dda"
@@ -439,7 +453,44 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 290,
-        "y": 800,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "acb5c2a2b8987269",
+        "type": "mqtt in",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "topic": "TPICO",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "00df11dbf86dc40f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 70,
+        "y": 400,
+        "wires": [
+            [
+                "a5c6f041ef6e6e22"
+            ]
+        ]
+    },
+    {
+        "id": "cfc4a72c6cf4f616",
+        "type": "debug",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 380,
         "wires": []
     },
     {
@@ -456,12 +507,75 @@
         "correl": "",
         "expiry": "",
         "broker": "00df11dbf86dc40f",
-        "x": 460,
-        "y": 620,
+        "x": 800,
+        "y": 460,
         "wires": []
     },
     {
-        "id": "cfc4a72c6cf4f616",
+        "id": "cdf05c378f697c03",
+        "type": "function",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "func": "// especifica o lugar no banco de dados para pesquisar (função-findOne)\nconst mqtt = msg.payload\nmsg.collection = \"arcondicionado\"\nmsg.operation = \"findOne\"  //funcao do mongo\nmsg.payload = [{\"local\" : mqtt.local , \"mac\" : mqtt.mac}]\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 460,
+        "wires": [
+            [
+                "4447deb01f60415f",
+                "deb651c83ba7f6cd"
+            ]
+        ]
+    },
+    {
+        "id": "4447deb01f60415f",
+        "type": "mongodb2 in",
+        "z": "32525ad6c5cd5b5c",
+        "service": "_ext_",
+        "configNode": "58653eca164e1773",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 440,
+        "y": 460,
+        "wires": [
+            [
+                "333c41e623b7c4af",
+                "cfc4a72c6cf4f616"
+            ]
+        ]
+    },
+    {
+        "id": "b195dd72687da5e4",
+        "type": "inject",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"local\":\"Redacao-01\",\"mac\":\"1\"}",
+        "payloadType": "str",
+        "x": 130,
+        "y": 600,
+        "wires": [
+            [
+                "d767c15bf9364ae6"
+            ]
+        ]
+    },
+    {
+        "id": "deb651c83ba7f6cd",
         "type": "debug",
         "z": "32525ad6c5cd5b5c",
         "name": "",
@@ -473,12 +587,50 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 450,
-        "y": 580,
+        "x": 350,
+        "y": 560,
         "wires": []
     },
     {
-        "id": "c6c88422f6f27a92",
+        "id": "333c41e623b7c4af",
+        "type": "function",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "func": "const data = new Date()\nconst dataSemana = data.getDay() //pega dia da semana\nmsg.payload = {\n    \n    \"agenda\" : msg.payload.agenda[dataSemana],\n    \"tempIdeal\" : msg.payload.temperaturaIdeal\n    \n}  //array especifico do dia da semana\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 460,
+        "wires": [
+            [
+                "cfc4a72c6cf4f616",
+                "1750337e42a61178"
+            ]
+        ]
+    },
+    {
+        "id": "d767c15bf9364ae6",
+        "type": "mqtt out",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "topic": "TPICO",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "00df11dbf86dc40f",
+        "x": 670,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "a5c6f041ef6e6e22",
         "type": "debug",
         "z": "32525ad6c5cd5b5c",
         "name": "",
@@ -489,14 +641,255 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 510,
-        "y": 200,
+        "x": 270,
+        "y": 400,
         "wires": []
     },
     {
-        "id": "8965458ed7b0247d",
+        "id": "c4a451aae92c9522",
+        "type": "aedes broker",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "certname": "",
+        "keyname": "",
+        "dburl": "",
+        "usetls": false,
+        "x": 110,
+        "y": 40,
+        "wires": [
+            [
+                "a38fe42055fb5f10"
+            ],
+            [
+                "a38fe42055fb5f10"
+            ]
+        ]
+    },
+    {
+        "id": "652eac781d5ea256",
+        "type": "mqtt in",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "topic": "status",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "00df11dbf86dc40f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 90,
+        "y": 100,
+        "wires": [
+            [
+                "0fc0591ceb71c8c1",
+                "4cc69d78324d35ca"
+            ]
+        ]
+    },
+    {
+        "id": "04946b84a7d747ba",
+        "type": "mqtt in",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "topic": "mqttemperatura",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "00df11dbf86dc40f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 100,
+        "y": 160,
+        "wires": [
+            [
+                "3b8ad7be90454792"
+            ]
+        ]
+    },
+    {
+        "id": "0fc0591ceb71c8c1",
+        "type": "debug",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "3b8ad7be90454792",
+        "type": "debug",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "a38fe42055fb5f10",
+        "type": "debug",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "6f688d7799702f37",
+        "type": "mongodb2 in",
+        "z": "9823b9b22e98967c",
+        "service": "_ext_",
+        "configNode": "a72959910ae5baa1",
+        "name": "",
+        "collection": "arcondicionado",
+        "operation": "",
+        "x": 440,
+        "y": 260,
+        "wires": [
+            [
+                "e9cb979076bc8412"
+            ]
+        ]
+    },
+    {
+        "id": "e9cb979076bc8412",
+        "type": "debug",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "4cc69d78324d35ca",
+        "type": "function",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "func": "const mqtt = msg.payload\nmsg.collection = \"arcondicionado\"\nmsg.operation=\"updateOne\"\nconst hora = new Date()\nmsg.payload=[\n    {\"local\":mqtt.local, \"mac\":mqtt.mac},\n    {$push:\n    {\"temperatura\":\n        { \n            \"movimento\":mqtt.movimento,\n            \"temperatura\": mqtt.Temperatura ,\n            \"time\": mqtt.hora,\n            \"evaporadora\" :mqtt.evaporadora,\n            \"condensadora\":mqtt.condensadora\n        }\n    },\n    $set:{\"ultimoacesso\":hora.getTime(), \"condesadora\":mqtt.condensadora, \"evaporadora\":mqtt.evaporadora}}\n    ]\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 120,
+        "y": 320,
+        "wires": [
+            [
+                "6f688d7799702f37",
+                "1a5c38ebf86978b6"
+            ]
+        ]
+    },
+    {
+        "id": "1a5c38ebf86978b6",
+        "type": "debug",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 330,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "fbd43c678ff80e7f",
+        "type": "catch",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 80,
+        "y": 740,
+        "wires": [
+            [
+                "fc9da33b7dddd2bc"
+            ]
+        ]
+    },
+    {
+        "id": "fc9da33b7dddd2bc",
+        "type": "debug",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 290,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "8e3e8306f9244d7a",
+        "type": "mqtt in",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "topic": "tempideal",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "00df11dbf86dc40f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 140,
+        "y": 400,
+        "wires": [
+            [
+                "c676ba9c86304822",
+                "5cc4d229fb66cf3c"
+            ]
+        ]
+    },
+    {
+        "id": "c676ba9c86304822",
         "type": "switch",
-        "z": "32525ad6c5cd5b5c",
+        "z": "9823b9b22e98967c",
         "name": "",
         "property": "payload.etapa",
         "propertyType": "msg",
@@ -515,22 +908,22 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 270,
-        "y": 300,
+        "x": 130,
+        "y": 520,
         "wires": [
             [
-                "fa014946490a8b40",
-                "6f7545b81ba63e58"
+                "a4417ec24d306be4",
+                "1ff5a6ef15cef6a5"
             ],
             [
-                "90c4d577525da182"
+                "6c4640bd58361ea7"
             ]
         ]
     },
     {
-        "id": "fa014946490a8b40",
+        "id": "a4417ec24d306be4",
         "type": "debug",
-        "z": "32525ad6c5cd5b5c",
+        "z": "9823b9b22e98967c",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -539,14 +932,14 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 490,
-        "y": 260,
+        "x": 370,
+        "y": 460,
         "wires": []
     },
     {
-        "id": "90c4d577525da182",
+        "id": "6c4640bd58361ea7",
         "type": "debug",
-        "z": "32525ad6c5cd5b5c",
+        "z": "9823b9b22e98967c",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -555,30 +948,14 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 490,
-        "y": 300,
+        "x": 370,
+        "y": 500,
         "wires": []
     },
     {
-        "id": "1034ab3755268e93",
-        "type": "debug",
-        "z": "32525ad6c5cd5b5c",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 490,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "6f7545b81ba63e58",
+        "id": "1ff5a6ef15cef6a5",
         "type": "change",
-        "z": "32525ad6c5cd5b5c",
+        "z": "9823b9b22e98967c",
         "name": "",
         "rules": [
             {
@@ -594,33 +971,65 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 200,
-        "y": 580,
+        "x": 280,
+        "y": 600,
         "wires": [
             [
-                "1750337e42a61178",
-                "cfc4a72c6cf4f616"
+                "90ec3e22a5863582",
+                "38214ebd98d92bb5"
             ]
         ]
     },
     {
-        "id": "acb5c2a2b8987269",
-        "type": "mqtt in",
-        "z": "32525ad6c5cd5b5c",
+        "id": "38214ebd98d92bb5",
+        "type": "debug",
+        "z": "9823b9b22e98967c",
         "name": "",
-        "topic": "tempideal",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 490,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "90ec3e22a5863582",
+        "type": "mqtt out",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "topic": "memoria",
         "qos": "0",
-        "datatype": "json",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
         "broker": "00df11dbf86dc40f",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "x": 90,
-        "y": 260,
-        "wires": [
-            [
-                "8965458ed7b0247d"
-            ]
-        ]
+        "x": 500,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "5cc4d229fb66cf3c",
+        "type": "debug",
+        "z": "9823b9b22e98967c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 400,
+        "wires": []
     }
 ]

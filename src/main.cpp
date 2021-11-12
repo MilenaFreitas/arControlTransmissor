@@ -40,7 +40,8 @@ U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(15, 4, 16);
 const char* host = "esp3";
 char topic1[]= "status";          // topico MQTT
 char topic2[]= "mqttemperatura";  // topico MQTT
-char topic3[]="memoria"; 
+char topic3[] = "memoria";
+char topic4[] = "tempideal";
 bool publishNewState = false; 
 TaskHandle_t retornoTemp;
 IPAddress ip=WiFi.localIP();
@@ -147,6 +148,7 @@ void callback(char* topicc, byte* payload, unsigned int length){
     for (int i=0;i<length;i++) {
       msg += (char)payload[i];
     }
+
     msg2= msg.substr(0,1); //retorna o t
     msg3= msg.substr(1,2);  //retorna a temperatura ideal
     if(msg2=="t"){
@@ -209,7 +211,7 @@ void conectaMQTT(){
       client.subscribe (topic1);   //se inscreve no topico a ser usado
       client.subscribe (topic2);
       client.subscribe (topic3);
-      client.subscribe ("tempideal");
+      client.subscribe (topic4);
     } else {
       Serial.println("Falha na conexao");
       Serial.print(client.state());
@@ -274,8 +276,7 @@ void redee(){
     EEPROM.begin(EEPROM_SIZE);
     
     tIdeal=EEPROM.read(0);
-    // Hdes=EEPROM.read(1);
-    // Hliga=EEPROM.read(2);
+
   }
 }
 void tentaReconexao(){ //roda assincrona no processador 0
@@ -308,7 +309,8 @@ void publish(){
     tempAtual=tempAntiga;
   }else if (tempAntiga != tempAtual){
     // nova temperatura
-  }  tempAntiga=tempAtual;
+    tempAntiga=tempAtual;
+  }  
 }
 void arLiga(void *pvParameters){
   while(1){
@@ -418,8 +420,6 @@ void setup(){
   attachInterrupt (digitalPinToInterrupt(pirPin1), mudaStatusPir, RISING);
   tickerpin.start();
   tempTicker.start();
-  u8x8.begin();
-  u8x8.clear();
   datahora();
   ip=WiFi.localIP(); //pega ip
   mac=DEVICE_ID;     //pega mac
@@ -431,14 +431,13 @@ void loop(){
   datahora();
   server.handleClient();
   reconectaMQTT();
-  if(tempAtual<50){  //prevenção de erros na leitura do sensor
+  if(tempAtual>50){  //prevenção de erros na leitura do sensor
     publishNewState=false;
-  }
-  if(rede==0){
+  }else if(WL_DISCONNECTED || WL_CONNECTION_LOST){
+    rede=0;
+  }else if(rede==0){
     tentaReconexao();
   }
-  tempTicker.update();
-  tickerpin.update();
   unsigned long currentMillis1 = millis();
   if (currentMillis1-previousMillis1 >= intervalo){
     payloadMQTT();
@@ -449,12 +448,16 @@ void loop(){
   }
   if(vez==0){
     StaticJsonDocument<256> doc;
-    doc["etapa"]="ligado";
+    doc["local"] = "Transmissor";
+    doc["mac"] =  "biitEC15178E0D84";
+    doc["etapa"] =  "ligado";
     char buffer[256];
     serializeJson(doc, buffer);
     client.publish("tempideal", buffer);
     Serial.println("mandou");
     vez=1;
   }
+  tempTicker.update();
+  tickerpin.update();
   delay(500);
 }
