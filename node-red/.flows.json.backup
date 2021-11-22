@@ -1,16 +1,23 @@
 [
     {
-        "id": "32525ad6c5cd5b5c",
-        "type": "tab",
-        "label": "Redacao-01",
-        "disabled": false,
-        "info": ""
-    },
-    {
         "id": "9823b9b22e98967c",
         "type": "tab",
         "label": "ArTransmissor",
         "disabled": true,
+        "info": ""
+    },
+    {
+        "id": "32525ad6c5cd5b5c",
+        "type": "tab",
+        "label": "Redacao-01",
+        "disabled": true,
+        "info": ""
+    },
+    {
+        "id": "033d0331c9ba06a2",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
         "info": ""
     },
     {
@@ -1005,7 +1012,497 @@
         "y": 680,
         "wires": [
             [
-                "1750337e42a61178"
+                "1750337e42a61178",
+                "547c47d81dd31dee"
+            ]
+        ]
+    },
+    {
+        "id": "547c47d81dd31dee",
+        "type": "debug",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "8bd8cab79e572d2c",
+        "type": "aedes broker",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "certname": "",
+        "keyname": "",
+        "dburl": "",
+        "usetls": false,
+        "x": 110,
+        "y": 40,
+        "wires": [
+            [
+                "db63cb469705138f"
+            ],
+            [
+                "db63cb469705138f"
+            ]
+        ]
+    },
+    {
+        "id": "db63cb469705138f",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "c3271ca7da0e57cd",
+        "type": "catch",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 100,
+        "y": 360,
+        "wires": [
+            [
+                "6f04eed4a31d12a1"
+            ]
+        ]
+    },
+    {
+        "id": "6f04eed4a31d12a1",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 290,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "bb5fb986dd67311a",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "b2fedff855d8100d",
+        "type": "mqtt out",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "topic": "memoria",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "00df11dbf86dc40f",
+        "x": 740,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "1cf1f62d09b5db21",
+        "type": "function",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "func": "// especifica o lugar no banco de dados para pesquisar (função-findOne)\nconst mqtt = msg.payload\nmsg.collection = \"arcondicionado\"\nmsg.operation = \"findOne\"  //funcao do mongo\nmsg.payload = [{\"local\" : mqtt.local , \"mac\" : mqtt.mac}]\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 280,
+        "wires": [
+            [
+                "bac35fe516fb7ae4",
+                "195812a012f80b2e"
+            ]
+        ]
+    },
+    {
+        "id": "bac35fe516fb7ae4",
+        "type": "mongodb2 in",
+        "z": "033d0331c9ba06a2",
+        "service": "_ext_",
+        "configNode": "58653eca164e1773",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 460,
+        "y": 240,
+        "wires": [
+            [
+                "397bd9d0754434f9",
+                "bcf268501a02eb83"
+            ]
+        ]
+    },
+    {
+        "id": "195812a012f80b2e",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "bcf268501a02eb83",
+        "type": "function",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "func": "const data = new Date()\nconst dataSemana = data.getDay() //pega dia da semana\nmsg.payload = {\n    \n    \"agenda\" : msg.payload.agenda[dataSemana],\n    \"tempIdeal\" : msg.payload.temperaturaIdeal\n    \n}  //array especifico do dia da semana\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 300,
+        "wires": [
+            [
+                "bb5fb986dd67311a",
+                "b2fedff855d8100d"
+            ]
+        ]
+    },
+    {
+        "id": "0d6e68ec0858b06c",
+        "type": "switch",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "property": "payload.etapa",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "ligado",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 160,
+        "y": 180,
+        "wires": [
+            [
+                "952d9de1ac953aa3",
+                "1cf1f62d09b5db21"
+            ]
+        ]
+    },
+    {
+        "id": "952d9de1ac953aa3",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "6014e77853afb357",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 290,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "efdcb30a74e3ea54",
+        "type": "mqtt out",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "topic": "permissaoResposta",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "00df11dbf86dc40f",
+        "x": 340,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "2c4a846663286897",
+        "type": "mqtt in",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "topic": "permissao",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "00df11dbf86dc40f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 100,
+        "y": 420,
+        "wires": [
+            [
+                "6b0ae3fb36ebd1ce"
+            ]
+        ]
+    },
+    {
+        "id": "6b0ae3fb36ebd1ce",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 310,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "88824e381bdcdf60",
+        "type": "inject",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 110,
+        "y": 480,
+        "wires": [
+            [
+                "efdcb30a74e3ea54",
+                "b8565b4785b38e33"
+            ]
+        ]
+    },
+    {
+        "id": "fb986d186d604f8c",
+        "type": "inject",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "123456789",
+        "payloadType": "num",
+        "x": 570,
+        "y": 440,
+        "wires": [
+            [
+                "b2fedff855d8100d",
+                "f42cf61d2cfb01f4"
+            ]
+        ]
+    },
+    {
+        "id": "f42cf61d2cfb01f4",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "397bd9d0754434f9",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "b8565b4785b38e33",
+        "type": "function",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "func": "const data = new Date()\nconst dataSemana = data.getDay() //pega dia da semana\nmsg.payload = {\n    \n    \"agenda\" : msg.payload.agenda[dataSemana],\n    \"tempIdeal\" : msg.payload.temperaturaIdeal\n    \n}  //array especifico do dia da semana\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 660,
+        "wires": [
+            [
+                "17a4f45c7497b24e",
+                "b2fedff855d8100d"
+            ]
+        ]
+    },
+    {
+        "id": "17a4f45c7497b24e",
+        "type": "debug",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 490,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "c42ee7bdd864ce97",
+        "type": "mqtt in",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "topic": "tempideal",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "00df11dbf86dc40f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 80,
+        "y": 100,
+        "wires": [
+            [
+                "0d6e68ec0858b06c",
+                "6014e77853afb357"
+            ]
+        ]
+    },
+    {
+        "id": "4922569726cc9ced",
+        "type": "inject",
+        "z": "033d0331c9ba06a2",
+        "name": "",
+        "props": [
+            {
+                "p": "payload.local",
+                "v": "Redacao-01",
+                "vt": "str"
+            },
+            {
+                "p": "payload.mac",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "p": "payload.etapa",
+                "v": "ligado",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 80,
+        "y": 260,
+        "wires": [
+            [
+                "0d6e68ec0858b06c"
             ]
         ]
     }
