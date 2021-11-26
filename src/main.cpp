@@ -148,7 +148,6 @@ void callback(char* topicc, byte* payload, unsigned int length){
     for (int i=0;i<length;i++) {
       msg += (char)payload[i];
     }
-
     msg2= msg.substr(0,1); //retorna o t
     msg3= msg.substr(1,2);  //retorna a temperatura ideal
     if(msg2=="t"){
