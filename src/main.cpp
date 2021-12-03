@@ -18,7 +18,7 @@
 #define WIFI_NOME "Metropole" //rede wifi específica
 #define WIFI_SENHA "908070Radio"
 #define BROKER_MQTT "10.71.0.2"
-#define DEVICE_TYPE "ESP32"
+#define DEVICE_TYPE "AR-TRANSMISSOR"
 #define TOKEN "ib+r)WKRvHCGjmjGQ0"
 #define ORG "n5hyok"
 #define PUBLISH_INTERVAL 1000*60*1//intervalo de 1 min para publicar temperatura
@@ -204,7 +204,7 @@ void conectaMQTT(){
   //Estabelece conexao c MQTT/WIFI
    if(!client.connected()){
     Serial.println("conectando...");
-    if (client.connect("ESP322")){
+    if (client.connect("AR-TRANSMISSOR")){
       Serial.println("CONECTADO! :)");
       client.publish ("teste", "hello word");
       client.subscribe (topic1);   //se inscreve no topico a ser usado

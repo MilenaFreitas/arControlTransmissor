@@ -1,16 +1,16 @@
 [
     {
-        "id": "9823b9b22e98967c",
-        "type": "tab",
-        "label": "ArTransmissor",
-        "disabled": true,
-        "info": ""
-    },
-    {
         "id": "32525ad6c5cd5b5c",
         "type": "tab",
         "label": "Redacao-01",
         "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "9823b9b22e98967c",
+        "type": "tab",
+        "label": "ArTransmissor",
+        "disabled": true,
         "info": ""
     },
     {
@@ -130,7 +130,8 @@
         "wires": [
             [
                 "7529b2c5d53c4d5e",
-                "46466d0a46dd0a1d"
+                "46466d0a46dd0a1d",
+                "4e0cfdbdf147dba3"
             ]
         ]
     },
@@ -213,8 +214,8 @@
         "name": "",
         "collection": "arcondicionado",
         "operation": "",
-        "x": 380,
-        "y": 240,
+        "x": 360,
+        "y": 220,
         "wires": [
             [
                 "41c6e94a936118b5"
@@ -234,8 +235,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 630,
-        "y": 320,
+        "x": 670,
+        "y": 260,
         "wires": []
     },
     {
@@ -250,7 +251,7 @@
         "finalize": "",
         "libs": [],
         "x": 120,
-        "y": 300,
+        "y": 280,
         "wires": [
             [
                 "9df6c76321bf63f7"
@@ -271,7 +272,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 290,
-        "y": 300,
+        "y": 280,
         "wires": []
     },
     {
@@ -282,7 +283,7 @@
         "scope": null,
         "uncaught": false,
         "x": 80,
-        "y": 620,
+        "y": 580,
         "wires": [
             [
                 "b1a93586455d0dda"
@@ -294,7 +295,7 @@
         "type": "debug",
         "z": "32525ad6c5cd5b5c",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -303,24 +304,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 270,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "cfc4a72c6cf4f616",
-        "type": "debug",
-        "z": "32525ad6c5cd5b5c",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 650,
-        "y": 440,
+        "y": 580,
         "wires": []
     },
     {
@@ -337,8 +321,8 @@
         "correl": "",
         "expiry": "",
         "broker": "00df11dbf86dc40f",
-        "x": 720,
-        "y": 620,
+        "x": 860,
+        "y": 500,
         "wires": []
     },
     {
@@ -353,7 +337,7 @@
         "finalize": "",
         "libs": [],
         "x": 240,
-        "y": 540,
+        "y": 500,
         "wires": [
             [
                 "4447deb01f60415f",
@@ -371,7 +355,7 @@
         "collection": "",
         "operation": "",
         "x": 440,
-        "y": 500,
+        "y": 460,
         "wires": [
             [
                 "333c41e623b7c4af",
@@ -380,39 +364,26 @@
         ]
     },
     {
-        "id": "deb651c83ba7f6cd",
-        "type": "debug",
-        "z": "32525ad6c5cd5b5c",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 410,
-        "y": 560,
-        "wires": []
-    },
-    {
         "id": "333c41e623b7c4af",
         "type": "function",
         "z": "32525ad6c5cd5b5c",
         "name": "",
-        "func": "const data = new Date()\nconst dataSemana = data.getDay() //pega dia da semana\nmsg.payload = {\n    \n    \"agenda\" : msg.payload.agenda[dataSemana],\n    \"tempIdeal\" : msg.payload.temperaturaIdeal\n    \n}  //array especifico do dia da semana\nreturn msg;",
-        "outputs": 1,
+        "func": "if(msg.payload != 0 || msg.payload != undefined ){\n    const data = new Date()\n    const dataSemana = data.getDay() //pega dia da semana\n    msg.payload = {\n        \"agenda\" : msg.payload.agenda[dataSemana],\n        \"tempIdeal\" : msg.payload.temperaturaIdeal\n        \n    }  //array especifico do dia da semana\n    return [msg, null];\n} else {\n    msg.payload=\"false\"\n    return [null, msg]\n}\n",
+        "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 620,
-        "y": 540,
+        "y": 500,
         "wires": [
             [
-                "cfc4a72c6cf4f616",
-                "1750337e42a61178"
+                "1750337e42a61178",
+                "cfc4a72c6cf4f616"
+            ],
+            [
+                "1750337e42a61178",
+                "d830a49950d2d6fe"
             ]
         ]
     },
@@ -845,7 +816,7 @@
         "rap": true,
         "rh": 0,
         "x": 100,
-        "y": 360,
+        "y": 340,
         "wires": [
             [
                 "7b18a6cbfbaf4e2e",
@@ -871,7 +842,7 @@
         "repair": false,
         "outputs": 1,
         "x": 140,
-        "y": 440,
+        "y": 400,
         "wires": [
             [
                 "937851f5edc130c3",
@@ -884,7 +855,7 @@
         "type": "debug",
         "z": "32525ad6c5cd5b5c",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -892,7 +863,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 330,
-        "y": 440,
+        "y": 400,
         "wires": []
     },
     {
@@ -900,7 +871,7 @@
         "type": "debug",
         "z": "32525ad6c5cd5b5c",
         "name": "",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -908,8 +879,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 270,
-        "y": 360,
+        "x": 310,
+        "y": 340,
         "wires": []
     },
     {
@@ -927,7 +898,7 @@
         "expiry": "",
         "broker": "00df11dbf86dc40f",
         "x": 320,
-        "y": 740,
+        "y": 700,
         "wires": []
     },
     {
@@ -943,7 +914,7 @@
         "rap": true,
         "rh": 0,
         "x": 80,
-        "y": 680,
+        "y": 640,
         "wires": [
             [
                 "25c9dda55114aeb1"
@@ -955,7 +926,7 @@
         "type": "debug",
         "z": "32525ad6c5cd5b5c",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -963,7 +934,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 290,
-        "y": 680,
+        "y": 640,
         "wires": []
     },
     {
@@ -984,54 +955,12 @@
         "payload": "1",
         "payloadType": "num",
         "x": 90,
-        "y": 740,
+        "y": 700,
         "wires": [
             [
                 "940fad0c65bd2f3a"
             ]
         ]
-    },
-    {
-        "id": "3d0b0317b089669a",
-        "type": "inject",
-        "z": "32525ad6c5cd5b5c",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "123456789",
-        "payloadType": "num",
-        "x": 560,
-        "y": 680,
-        "wires": [
-            [
-                "1750337e42a61178",
-                "547c47d81dd31dee"
-            ]
-        ]
-    },
-    {
-        "id": "547c47d81dd31dee",
-        "type": "debug",
-        "z": "32525ad6c5cd5b5c",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 740,
-        "y": 780,
-        "wires": []
     },
     {
         "id": "8bd8cab79e572d2c",
@@ -1447,5 +1376,56 @@
                 "0d6e68ec0858b06c"
             ]
         ]
+    },
+    {
+        "id": "cfc4a72c6cf4f616",
+        "type": "debug",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "deb651c83ba7f6cd",
+        "type": "debug",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "d830a49950d2d6fe",
+        "type": "debug",
+        "z": "32525ad6c5cd5b5c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 600,
+        "wires": []
     }
 ]
