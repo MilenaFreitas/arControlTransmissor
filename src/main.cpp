@@ -13,11 +13,9 @@
 #include <SPI.h>
 #include <WiFiClient.h>
 #include <Update.h>
+#include "C:\Users\Estudio\Desktop\dados.cpp" 
 
 #define EEPROM_SIZE 1024
-#define WIFI_NOME "Metropole" //rede wifi específica
-#define WIFI_SENHA "908070Radio"
-#define BROKER_MQTT "10.71.0.2"
 #define DEVICE_TYPE "AR-TRANSMISSOR"
 #define TOKEN "ib+r)WKRvHCGjmjGQ0"
 #define ORG "n5hyok"
@@ -37,7 +35,7 @@ DHTesp dhtSensor;
 DynamicJsonDocument doc (1024); //tamanho do doc do json
 U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(15, 4, 16);
 
-const char* host = "esp3";
+const char* host = "AR-TRANSMISSOR";
 char topic1[]= "status";          // topico MQTT
 char topic2[]= "mqttemperatura";  // topico MQTT
 char topic3[] = "memoria";
@@ -273,7 +271,6 @@ void redee(){
     //protocolo offline
     Serial.println("rede 0");
     EEPROM.begin(EEPROM_SIZE);
-    
     tIdeal=EEPROM.read(0);
 
   }
@@ -448,7 +445,7 @@ void loop(){
   if(vez==0){
     StaticJsonDocument<256> doc;
     doc["local"] = "Transmissor";
-    doc["mac"] =  "biitEC15178E0D84";
+    doc["mac"] =  mac;
     doc["etapa"] =  "ligado";
     char buffer[256];
     serializeJson(doc, buffer);
