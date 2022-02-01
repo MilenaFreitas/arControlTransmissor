@@ -17,8 +17,6 @@
 
 #define EEPROM_SIZE 1024
 #define DEVICE_TYPE "AR-TRANSMISSOR"
-#define TOKEN "ib+r)WKRvHCGjmjGQ0"
-#define ORG "n5hyok"
 #define PUBLISH_INTERVAL 1000*60*1//intervalo de 1 min para publicar temperatura
 
 uint64_t chipid=ESP.getEfuseMac(); // The chip ID is essentially its MAC address(length: 6 bytes).
