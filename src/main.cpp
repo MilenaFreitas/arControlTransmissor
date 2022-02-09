@@ -367,7 +367,6 @@ void PinConfig () {
 }
 void payloadMQTT(){ 
   datahora();
-  u8x8.clear();
   time_t tt=time(NULL);
   StaticJsonDocument<256> doc;
   doc["local"] = "AR-Transmissor";
