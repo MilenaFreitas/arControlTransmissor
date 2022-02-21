@@ -138,6 +138,13 @@ String serverIndex =
 "});"
 "</script>" + style;
 ////////////////////////////////////////////////////////////////
+void dadosEEPROM(){
+  //DEFINE OS DADOS EMERGENCIAIS DA EPROOM 
+  if(EEPROM.read(0) != tIdeal && tIdeal!=0) {
+    EEPROM.write(0, tIdeal);  //escreve tempIdeal no dress=0 vindo do mqtt
+    Serial.println("ESCREVEU NA EEPROM");
+  } 
+}
 void callback(char* topicc, byte* payload, unsigned int length){
   std::string msg;
   if (topic3){
@@ -153,6 +160,7 @@ void callback(char* topicc, byte* payload, unsigned int length){
       Serial.println("---------------------");
       tIdeal = atoi(msg3.c_str());
       Serial.println(tIdeal);
+      dadosEEPROM();
     }
   }
 }
@@ -233,13 +241,6 @@ void datahora(){
     ntp.forceUpdate();
   }	
 }
-void dadosEEPROM(){
-  //DEFINE OS DADOS EMERGENCIAIS DA EPROOM 
-  if(EEPROM.read(0) != tIdeal) {
-    EEPROM.write(0, tIdeal);  //escreve tempIdeal no dress=0 vindo do mqtt
-    Serial.println("ESCREVEU NA EEPROM");
-  } 
-}
 void iniciaWifi(){
   int cont=0;
   WiFi.begin(WIFI_NOME, WIFI_SENHA); 
@@ -270,7 +271,7 @@ void redee(){
     Serial.println("rede 0");
     EEPROM.begin(EEPROM_SIZE);
     tIdeal=EEPROM.read(0);
-
+      
   }
 }
 void tentaReconexao(){ //roda assincrona no processador 0
